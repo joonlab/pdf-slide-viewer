@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PDF Slide Viewer Collection</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -11,11 +14,25 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --neo-black: #000000;
+            --neo-white: #FFFEF0;
+            --neo-yellow: #FFD93D;
+            --neo-blue: #4D96FF;
+            --neo-pink: #FF6B9D;
+            --neo-green: #6BCB77;
+            --neo-orange: #FF8C42;
+            --neo-purple: #9B5DE5;
+            --neo-border: 4px;
+            --neo-shadow: 6px 6px 0px var(--neo-black);
+            --neo-shadow-sm: 4px 4px 0px var(--neo-black);
+        }
+
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--neo-white);
             min-height: 100vh;
-            color: #fff;
+            color: var(--neo-black);
         }
 
         .container {
@@ -24,143 +41,292 @@
             padding: 40px 20px;
         }
 
+        /* Header */
         header {
             text-align: center;
-            margin-bottom: 50px;
+            margin-bottom: 60px;
+        }
+
+        .logo-box {
+            display: inline-block;
+            background-color: var(--neo-yellow);
+            border: var(--neo-border) solid var(--neo-black);
+            box-shadow: 8px 8px 0px var(--neo-black);
+            padding: 20px 40px;
+            transform: rotate(-2deg);
+            margin-bottom: 20px;
         }
 
         header h1 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             font-weight: 700;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            text-transform: uppercase;
+            letter-spacing: -2px;
         }
 
-        header p {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 1.1rem;
+        .subtitle {
+            display: inline-block;
+            background-color: var(--neo-black);
+            color: var(--neo-white);
+            padding: 8px 20px;
+            font-size: 1rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transform: rotate(1deg);
         }
 
+        /* Slides Grid */
         .slides-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 40px;
         }
 
+        /* Card Colors */
+        .slide-card:nth-child(4n+1) { --card-color: var(--neo-blue); }
+        .slide-card:nth-child(4n+2) { --card-color: var(--neo-pink); }
+        .slide-card:nth-child(4n+3) { --card-color: var(--neo-green); }
+        .slide-card:nth-child(4n+4) { --card-color: var(--neo-orange); }
+
         .slide-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 16px;
-            overflow: hidden;
-            transition: all 0.3s ease;
+            background-color: var(--neo-white);
+            border: var(--neo-border) solid var(--neo-black);
+            box-shadow: var(--neo-shadow);
             cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.1s ease;
+            transform: rotate(-1deg);
+            overflow: hidden;
+        }
+
+        .slide-card:nth-child(even) {
+            transform: rotate(1deg);
         }
 
         .slide-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-            border-color: rgba(102, 126, 234, 0.5);
+            transform: translate(3px, 3px) rotate(0deg);
+            box-shadow: 3px 3px 0px var(--neo-black);
+        }
+
+        .slide-card:active {
+            transform: translate(6px, 6px);
+            box-shadow: none;
+        }
+
+        .thumbnail-wrapper {
+            position: relative;
+            background-color: var(--card-color);
+            border-bottom: var(--neo-border) solid var(--neo-black);
         }
 
         .slide-card .thumbnail {
             width: 100%;
             aspect-ratio: 16/9;
             object-fit: cover;
-            background: #0a0a14;
+            display: block;
+        }
+
+        .slide-number {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background-color: var(--neo-black);
+            color: var(--neo-white);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 6px 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .slide-card .info {
             padding: 20px;
+            background-color: var(--card-color);
         }
 
         .slide-card .title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #fff;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+            line-height: 1.3;
         }
 
         .slide-card .meta {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.9rem;
+            gap: 10px;
         }
 
         .slide-card .date {
-            background: rgba(102, 126, 234, 0.2);
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            background-color: var(--neo-white);
+            border: 3px solid var(--neo-black);
+            box-shadow: var(--neo-shadow-sm);
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            font-weight: 700;
         }
 
         .slide-card .slide-count {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
+            background-color: var(--neo-black);
+            color: var(--neo-white);
+            padding: 8px 14px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
         }
 
         .slide-card .slide-count svg {
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 18px;
             fill: currentColor;
         }
 
+        /* Empty State */
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
-            color: rgba(255, 255, 255, 0.5);
+            padding: 80px 20px;
+        }
+
+        .empty-box {
+            display: inline-block;
+            background-color: var(--neo-yellow);
+            border: var(--neo-border) solid var(--neo-black);
+            box-shadow: var(--neo-shadow);
+            padding: 40px 60px;
         }
 
         .empty-state svg {
             width: 80px;
             height: 80px;
             margin-bottom: 20px;
-            opacity: 0.3;
         }
 
+        .empty-state p {
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        /* Footer */
         footer {
             text-align: center;
-            margin-top: 60px;
-            padding: 20px;
-            color: rgba(255, 255, 255, 0.3);
+            margin-top: 80px;
+            padding: 30px;
+        }
+
+        .footer-box {
+            display: inline-block;
+            background-color: var(--neo-black);
+            color: var(--neo-white);
+            padding: 15px 30px;
             font-size: 0.9rem;
+            font-weight: 500;
+            border: var(--neo-border) solid var(--neo-black);
         }
 
         footer a {
-            color: rgba(102, 126, 234, 0.8);
+            color: var(--neo-yellow);
             text-decoration: none;
+            font-weight: 700;
+            border-bottom: 2px solid var(--neo-yellow);
         }
 
         footer a:hover {
-            text-decoration: underline;
+            background-color: var(--neo-yellow);
+            color: var(--neo-black);
         }
 
-        @media (max-width: 640px) {
+        /* Decorative Elements */
+        .deco-circle {
+            position: fixed;
+            border: var(--neo-border) solid var(--neo-black);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .deco-1 {
+            width: 200px;
+            height: 200px;
+            background-color: var(--neo-yellow);
+            top: 10%;
+            left: -50px;
+            opacity: 0.5;
+        }
+
+        .deco-2 {
+            width: 150px;
+            height: 150px;
+            background-color: var(--neo-pink);
+            bottom: 20%;
+            right: -30px;
+            opacity: 0.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo-box {
+                padding: 15px 25px;
+                box-shadow: 6px 6px 0px var(--neo-black);
+            }
+
             header h1 {
-                font-size: 1.8rem;
+                font-size: 2rem;
             }
 
             .slides-grid {
                 grid-template-columns: 1fr;
-                gap: 20px;
+                gap: 30px;
+            }
+
+            .slide-card {
+                transform: none !important;
+            }
+
+            .slide-card:hover {
+                transform: translate(2px, 2px) !important;
+                box-shadow: 4px 4px 0px var(--neo-black);
             }
 
             .container {
                 padding: 20px 15px;
             }
+
+            .deco-circle {
+                display: none;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .slide-card .meta {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .slide-card .date,
+            .slide-card .slide-count {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="deco-circle deco-1"></div>
+    <div class="deco-circle deco-2"></div>
+
     <div class="container">
         <header>
-            <h1>PDF Slide Viewer</h1>
-            <p>Interactive slide presentations</p>
+            <div class="logo-box">
+                <h1>PDF Slides</h1>
+            </div>
+            <div class="subtitle">Interactive Presentations</div>
         </header>
 
         <div class="slides-grid" id="slidesGrid">
@@ -168,14 +334,18 @@
         </div>
 
         <div class="empty-state" id="emptyState" style="display: none;">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 17h10v-2H7v2zm0-4h10v-2H7v2zm0-4h10V7H7v2z"/>
-            </svg>
-            <p>No slides available</p>
+            <div class="empty-box">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 17h10v-2H7v2zm0-4h10v-2H7v2zm0-4h10V7H7v2z"/>
+                </svg>
+                <p>No Slides Yet!</p>
+            </div>
         </div>
 
         <footer>
-            Powered by <a href="https://github.com/joonlab/pdf-slide-viewer" target="_blank">pdf-slide-viewer</a>
+            <div class="footer-box">
+                Built with <a href="https://github.com/joonlab/pdf-slide-viewer" target="_blank">pdf-slide-viewer</a>
+            </div>
         </footer>
     </div>
 
@@ -193,13 +363,16 @@
                     return;
                 }
 
-                slides.forEach(slide => {
+                slides.forEach((slide, index) => {
                     const card = document.createElement('div');
                     card.className = 'slide-card';
                     card.onclick = () => window.location.href = `${slide.id}/`;
 
                     card.innerHTML = `
-                        <img class="thumbnail" src="${slide.thumbnail}" alt="${slide.title}" loading="lazy">
+                        <div class="thumbnail-wrapper">
+                            <img class="thumbnail" src="${slide.thumbnail}" alt="${slide.title}" loading="lazy">
+                            <div class="slide-number">#${String(index + 1).padStart(2, '0')}</div>
+                        </div>
                         <div class="info">
                             <div class="title">${slide.title}</div>
                             <div class="meta">
@@ -208,7 +381,7 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                         <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z"/>
                                     </svg>
-                                    ${slide.slides} slides
+                                    ${slide.slides} pages
                                 </span>
                             </div>
                         </div>
