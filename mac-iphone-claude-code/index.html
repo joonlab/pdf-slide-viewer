@@ -351,6 +351,7 @@
         }
 
         /* Presentation Mode - hide UI elements, show only slide + progress */
+        /* Works for: fullscreen API, webkit fullscreen, and .presentation-mode class (iOS fallback) */
         :fullscreen .viewer-header,
         :fullscreen .mini-thumbnails,
         :fullscreen .nav-button,
@@ -574,7 +575,7 @@
         <div class="header-content">
             <h1>
                 Mac을 iPhone으로 Claude Code 실행
-                <span class="badge">2026.01.13</span>
+                <span class="badge">2026.01.14</span>
             </h1>
             <div style="display: flex; align-items: center; gap: 1rem;">
                 <span class="slide-counter">총 14페이지</span>
@@ -674,20 +675,20 @@
                 const thumb = document.createElement('div');
                 thumb.className = 'thumbnail';
                 thumb.onclick = () => openViewer(i - 1);
-                thumb.innerHTML = \`
-                    <img src="assets/slide_\${num}.png" alt="슬라이드 \${i}" loading="lazy">
+                thumb.innerHTML = `
+                    <img src="assets/slide_${num}.png" alt="슬라이드 ${i}" loading="lazy">
                     <div class="thumbnail-info">
-                        <span class="thumbnail-number">#\${i}</span>
+                        <span class="thumbnail-number">#${i}</span>
                         <span class="thumbnail-label">슬라이드</span>
                     </div>
-                \`;
+                `;
                 grid.appendChild(thumb);
 
                 // Mini thumbnail
                 const miniThumb = document.createElement('div');
                 miniThumb.className = 'mini-thumb';
                 miniThumb.onclick = () => goToSlide(i - 1);
-                miniThumb.innerHTML = \`<img src="assets/slide_\${num}.png" alt="슬라이드 \${i}">\`;
+                miniThumb.innerHTML = `<img src="assets/slide_${num}.png" alt="슬라이드 ${i}">`;
                 miniThumbnails.appendChild(miniThumb);
             }
         }
@@ -718,12 +719,12 @@
 
         function updateViewer() {
             const num = (currentSlide + 1).toString().padStart(2, '0');
-            document.getElementById('viewerImage').src = \`assets/slide_\${num}.png\`;
-            document.getElementById('viewerTitle').textContent = \`슬라이드 \${currentSlide + 1} / \${totalSlides}\`;
+            document.getElementById('viewerImage').src = `assets/slide_${num}.png`;
+            document.getElementById('viewerTitle').textContent = `슬라이드 ${currentSlide + 1} / ${totalSlides}`;
 
             // Update progress
             const progress = ((currentSlide + 1) / totalSlides) * 100;
-            document.getElementById('progressFill').style.width = \`\${progress}%\`;
+            document.getElementById('progressFill').style.width = `${progress}%`;
 
             // Update navigation buttons
             document.getElementById('prevBtn').disabled = currentSlide === 0;
@@ -770,6 +771,7 @@
             if (e.key === 'f' || e.key === 'F') {
                 e.preventDefault();
                 if (!isViewerActive) {
+                    // From thumbnail view → open first slide then fullscreen
                     openViewer(0);
                 }
                 toggleFullscreen();
@@ -800,10 +802,11 @@
             const elem = document.documentElement;
 
             if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                // Enter fullscreen (browser compatibility)
                 if (elem.requestFullscreen) {
                     elem.requestFullscreen();
                 } else if (elem.webkitRequestFullscreen) {
-                    elem.webkitRequestFullscreen();
+                    elem.webkitRequestFullscreen();  // Safari
                 }
             } else {
                 exitFullscreen();
@@ -814,25 +817,30 @@
             if (document.exitFullscreen) {
                 document.exitFullscreen();
             } else if (document.webkitExitFullscreen) {
-                document.webkitExitFullscreen();
+                document.webkitExitFullscreen();  // Safari
             }
         }
 
+        // Presentation mode: fullscreen + landscape lock (mobile)
         async function enterPresentationMode() {
             const viewer = document.getElementById('viewer');
             const isViewerActive = viewer.classList.contains('active');
 
+            // Open viewer if not active
             if (!isViewerActive) {
                 openViewer(0);
             }
 
+            // Check if iOS (doesn't support fullscreen API on non-video elements)
             const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 
             if (isIOS) {
+                // iOS: Show orientation hint
                 showOrientationHint();
                 return;
             }
 
+            // Enter fullscreen (Android/Desktop)
             const elem = document.documentElement;
             try {
                 if (elem.requestFullscreen) {
@@ -841,6 +849,7 @@
                     await elem.webkitRequestFullscreen();
                 }
 
+                // Lock orientation to landscape (Android)
                 if (screen.orientation && screen.orientation.lock) {
                     try {
                         await screen.orientation.lock('landscape');
@@ -853,13 +862,15 @@
             }
         }
 
+        // iOS: Show hint to rotate device, then enter presentation mode
         function showOrientationHint() {
+            // Remove existing hint if any
             const existing = document.getElementById('orientationHint');
             if (existing) existing.remove();
 
             const hint = document.createElement('div');
             hint.id = 'orientationHint';
-            hint.innerHTML = \`
+            hint.innerHTML = `
                 <div style="
                     position: fixed;
                     top: 0; left: 0; right: 0; bottom: 0;
@@ -887,9 +898,10 @@
                         to { transform: rotate(90deg); }
                     }
                 </style>
-            \`;
+            `;
             document.body.appendChild(hint);
 
+            // Auto-dismiss and enter presentation mode after 2 seconds
             setTimeout(() => {
                 if (document.getElementById('orientationHint')) {
                     document.getElementById('orientationHint').remove();
@@ -898,20 +910,25 @@
             }, 2000);
         }
 
+        // Exit presentation mode (iOS fallback)
         function exitPresentationMode() {
             document.body.classList.remove('presentation-mode');
         }
 
+        // Handle fullscreen exit: unlock orientation
         document.addEventListener('fullscreenchange', handleFullscreenChange);
         document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
 
         function handleFullscreenChange() {
             if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+                // Exiting fullscreen: unlock orientation and remove presentation mode
                 document.body.classList.remove('presentation-mode');
                 if (screen.orientation && screen.orientation.unlock) {
                     try {
                         screen.orientation.unlock();
-                    } catch (e) {}
+                    } catch (e) {
+                        // Ignore errors
+                    }
                 }
             }
         }
@@ -938,23 +955,29 @@
             const diffX = touchStartX - touchEndX;
             const diffY = touchStartY - touchEndY;
 
+            // Check if it's a swipe (moved more than threshold)
             if (Math.abs(diffX) > swipeThreshold) {
+                // Horizontal swipe
                 if (diffX > 0) {
                     nextSlide();
                 } else {
                     prevSlide();
                 }
             } else if (Math.abs(diffX) < 20 && Math.abs(diffY) < 20) {
+                // Tap (minimal movement) - check left/right half
                 const tapX = touchEndX;
                 const screenWidth = window.innerWidth;
 
+                // Ignore taps on buttons or interactive elements
                 if (e.target.closest('button, .mini-thumb, .btn')) {
                     return;
                 }
 
                 if (tapX < screenWidth / 2) {
+                    // Left half: previous slide
                     prevSlide();
                 } else {
+                    // Right half: next slide
                     nextSlide();
                 }
             }
