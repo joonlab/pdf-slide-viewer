@@ -1,5 +1,12 @@
 [
   {
+    "id": "ai-product-builder-bootcamp-w2",
+    "title": "AI Product Builder 부트캠프 2주차",
+    "date": "2026.01.17",
+    "thumbnail": "ai-product-builder-bootcamp-w2/assets/slide_01.png",
+    "slides": 95
+  },
+  {
     "id": "agent-context-engineering",
     "title": "Agent Context Engineering",
     "date": "2026.01.13",
