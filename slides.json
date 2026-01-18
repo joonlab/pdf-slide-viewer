@@ -1,5 +1,12 @@
 [
   {
+    "id": "git-worktree-parallel-dev",
+    "title": "Git Worktree 평행 개발 속도 전략",
+    "date": "2026.01.18",
+    "thumbnail": "git-worktree-parallel-dev/assets/slide_01.png",
+    "slides": 13
+  },
+  {
     "id": "ai-product-builder-bootcamp-w2",
     "title": "AI Product Builder 부트캠프 2주차",
     "date": "2026.01.17",
