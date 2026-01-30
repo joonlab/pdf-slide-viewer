@@ -1,5 +1,12 @@
 [
   {
+    "id": "ai-startup-growth-strategy",
+    "title": "AI 스타트업 성장 전략 설명회",
+    "date": "2026.01.30",
+    "thumbnail": "ai-startup-growth-strategy/assets/slide_01.png",
+    "slides": 30
+  },
+  {
     "id": "vibe-coding-claude-code-guide",
     "title": "요즘 바이브 코딩 클로드 코드 완벽 가이드",
     "date": "2026.01.29",
