@@ -1,5 +1,12 @@
 [
   {
+    "id": "enterprise-ax-assetization",
+    "title": "엔터프라이즈 AX의 본질과 암묵지의 자산화",
+    "date": "2026.03.06",
+    "thumbnail": "enterprise-ax-assetization/assets/slide_01.png",
+    "slides": 11
+  },
+  {
     "id": "mastering-secure-ai-automation",
     "title": "Mastering Secure AI Automation",
     "date": "2026.03.04",
