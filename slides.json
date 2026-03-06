@@ -1,5 +1,12 @@
 [
   {
+    "id": "claude-skill-evolution",
+    "title": "Claude Agent Skills의 진화",
+    "date": "2026.03.07",
+    "thumbnail": "claude-skill-evolution/assets/slide_01.png",
+    "slides": 13
+  },
+  {
     "id": "enterprise-ax-assetization",
     "title": "엔터프라이즈 AX의 본질과 암묵지의 자산화",
     "date": "2026.03.06",
