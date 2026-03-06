@@ -1,5 +1,12 @@
 [
   {
+    "id": "rag-masterclass",
+    "title": "RAG Masterclass",
+    "date": "2026.03.07",
+    "thumbnail": "rag-masterclass/assets/slide_01.png",
+    "slides": 14
+  },
+  {
     "id": "claude-skill-evolution",
     "title": "Claude Agent Skills의 진화",
     "date": "2026.03.07",
