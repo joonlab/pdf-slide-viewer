@@ -1,5 +1,12 @@
 [
   {
+    "id": "langchain-skills",
+    "title": "LangChain Skills",
+    "date": "2026.03.10",
+    "thumbnail": "langchain-skills/assets/slide_01.png",
+    "slides": 13
+  },
+  {
     "id": "rag-masterclass",
     "title": "RAG Masterclass",
     "date": "2026.03.07",
