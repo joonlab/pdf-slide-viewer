@@ -1,5 +1,12 @@
 [
   {
+    "id": "cli-anything-slides",
+    "title": "CLI-Anything: Agentic AI 시대의 CLI",
+    "date": "2026.03.13",
+    "thumbnail": "cli-anything-slides/assets/slide_01.png",
+    "slides": 11
+  },
+  {
     "id": "langchain-skills",
     "title": "LangChain Skills",
     "date": "2026.03.10",
