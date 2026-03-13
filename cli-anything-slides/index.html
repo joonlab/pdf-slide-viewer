@@ -676,7 +676,7 @@
                 thumb.className = 'thumbnail';
                 thumb.onclick = () => openViewer(i - 1);
                 thumb.innerHTML = `
-                    <img src="assets/slide_${num}.png?v=3" alt="슬라이드 ${i}" loading="lazy">
+                    <img src="assets/slide_${num}.png?v=4" alt="슬라이드 ${i}" loading="lazy">
                     <div class="thumbnail-info">
                         <span class="thumbnail-number">#${i}</span>
                         <span class="thumbnail-label">슬라이드</span>
@@ -688,7 +688,7 @@
                 const miniThumb = document.createElement('div');
                 miniThumb.className = 'mini-thumb';
                 miniThumb.onclick = () => goToSlide(i - 1);
-                miniThumb.innerHTML = `<img src="assets/slide_${num}.png?v=3" alt="슬라이드 ${i}">`;
+                miniThumb.innerHTML = `<img src="assets/slide_${num}.png?v=4" alt="슬라이드 ${i}">`;
                 miniThumbnails.appendChild(miniThumb);
             }
         }
@@ -719,7 +719,7 @@
 
         function updateViewer() {
             const num = (currentSlide + 1).toString().padStart(2, '0');
-            document.getElementById('viewerImage').src = `assets/slide_${num}.png?v=3`;
+            document.getElementById('viewerImage').src = `assets/slide_${num}.png?v=4`;
             document.getElementById('viewerTitle').textContent = `슬라이드 ${currentSlide + 1} / ${totalSlides}`;
 
             // Update progress
