@@ -1,5 +1,12 @@
 [
   {
+    "id": "claude-managed-agents-guide",
+    "title": "Claude Managed Agents 종합 가이드",
+    "date": "2026.04.14",
+    "thumbnail": "claude-managed-agents-guide/assets/slide_01.png",
+    "slides": 15
+  },
+  {
     "id": "the-great-flattening",
     "title": "거대한 수평화 (The Great Flattening)",
     "date": "2026.03.14",
